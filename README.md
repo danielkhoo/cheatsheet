@@ -157,3 +157,65 @@ function threeSum(input) {
   return Object.values(resHashmap);
 }
 ```
+
+### Reverse Linked List
+
+```javascript
+function reverseLinkedList(head) {
+  let curr = head;
+  let prev = null;
+  while (curr != null) {
+    const nextTemp = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = nextTemp;
+  }
+  return prev;
+}
+```
+
+### Reverse Linked List Between Indices
+
+```javascript
+function reverseLinkedListBetween(head, m, n) {
+  let curr = head;
+  let prev = null;
+
+  while (m >= 1) {
+    prev = curr;
+    curr = curr.next;
+    m--;
+    n--;
+  }
+  let con = prev;
+  let tail = curr;
+  while (n >= 0) {
+    let nextTemp = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = nextTemp;
+    n--;
+  }
+  if (con) {
+    con.next = prev;
+  } else {
+    head = prev;
+  }
+  tail.next = curr;
+  return head;
+}
+```
+
+### Max Contiguous Sum in Array
+
+```javascript
+function maxContigous(input) {
+  let maxEndingHere = input[0];
+  let res = input[0];
+  for (let i = 1; i < input.length; i++) {
+    maxEndingHere = Math.max(maxEndingHere + input[i], input[i]);
+    res = Math.max(res, maxEndingHere);
+  }
+  return res;
+}
+```
