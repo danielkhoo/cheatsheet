@@ -219,3 +219,49 @@ function maxContigous(input) {
   return res;
 }
 ```
+
+### Dependency Graph
+
+```javascript
+function canFinish(numCourses, prerequisites) {
+  let dependencyGraph = {};
+  let dependencyCount = Array(numCourses).fill(0);
+  let queue = [];
+
+  //Load the dependencyGraph with dependency:course
+  //e.g. '0':['1'],'1':['2']
+  //Load dependencyCount with dependencyCount per course [i]
+  //e.g. [0,1,1,1,1]
+  prerequisites.forEach(prereq => {
+    const [course, dep] = prereq;
+    if (dependencyGraph[dep]) {
+      dependencyGraph[dep] = dependencyGraph[dep].concat(course);
+    } else {
+      dependencyGraph[dep] = [course];
+    }
+    dependencyCount[course]++;
+  });
+  //Add courses with 0 dependencies to queue
+  for (let i = 0; i < dependencyCount.length; i++) {
+    if (dependencyCount[i] == 0) queue.push(i);
+  }
+  //For each item in queue,
+  while (queue.length > 0) {
+    let course = queue.shift();
+    //load dependencies for a course eg '0':['1']
+    let dependencies = dependencyGraph[course];
+    if (dependencies) {
+      //Decrement dep count for ['1'], if left with 0 add to queue
+      dependencies.forEach(dep => {
+        dependencyCount[dep]--;
+        if (dependencyCount[dep] == 0) queue.push(dep);
+      });
+    }
+  }
+  //Check for 0s in dependencyCount, if none true
+  for (let i = 0; i < dependencyCount.length; i++) {
+    if (dependencyCount[i] !== 0) return false;
+  }
+  return true;
+}
+```
