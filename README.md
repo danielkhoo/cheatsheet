@@ -81,6 +81,46 @@ function bubblesort(input) {
 }
 ```
 
+### Selection Sort
+
+```javascript
+function selectionSort(input) {
+  for (let i = 0; i < input.length; i++) {
+    const subArr = input.slice(i); //Slice subArr of unsorted
+
+    //Loop to find index of min item
+    let minIndex = 0;
+    for (let j = 1; j < subArr.length; j++) {
+      if (subArr[j] < subArr[minIndex]) minIndex = j;
+    }
+
+    //If min not at start, swap min with item at start of subArr
+    if (minIndex > 0) {
+      [input[i], input[i + minIndex]] = [input[i + minIndex], input[i]];
+    }
+  }
+  return input;
+}
+```
+
+### Insertion Sort
+
+```javascript
+function insertionSort(input) {
+  for (let i = 0; i < input.length; i++) {
+    const element = input[i];
+    //Loop from end of sorted to 0
+    let j;
+    for (j = i - 1; j >= 0; j--) {
+      if (input[j] < element) break;
+      input[j + 1] = input[j]; //Move items to the right
+    }
+    input[j + 1] = element; //Insert item into space
+  }
+  return input;
+}
+```
+
 ## Common Questions
 
 ### Sieve of Eratosthenes (Generate Primes)
