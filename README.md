@@ -246,6 +246,35 @@ function reverseLinkedListBetween(head, m, n) {
 }
 ```
 
+### Count Continous Sections in Linked List
+
+```javascript
+function linkedListContinous(head, G) {
+  let curr = head;
+  let hashmap = {};
+  let count = 0;
+  for (let i = 0; i < G.length; i++) {
+    hashmap[G[i]] = 1;
+  }
+  let continous = false;
+  while (curr !== null) {
+    let val = curr.val;
+    if (hashmap[val]) {
+      delete hashmap[val];
+      if (continous === false) {
+        count++;
+        continous = true;
+      }
+    } else {
+      continous = false;
+    }
+
+    curr = curr.next;
+  }
+  return count;
+}
+```
+
 ### Max Contiguous Sum in Array
 
 ```javascript
@@ -303,5 +332,62 @@ function canFinish(numCourses, prerequisites) {
     if (dependencyCount[i] !== 0) return false;
   }
   return true;
+}
+```
+
+### Buy and Sell Stock
+
+```javascript
+const input = [2, 1, 4, 6, 3];
+function maxProfit(prices) {
+  if (input.length == 0) return 0;
+  let min;
+  let max;
+  let maxDiff = 0;
+  for (let i = 0; i < prices.length; i++) {
+    const price = prices[i];
+    //If no min set min & max to price
+    if (min == undefined) min = max = price;
+    //If price lower than min, reset min/max
+    if (price < min) min = max = price;
+    //If price more than max, set as new max
+    if (price > max) max = price;
+
+    //If diff is greater than current, set as new max diff
+    const diff = price - min;
+    if (diff > maxDiff) maxDiff = diff;
+  }
+  return maxDiff;
+}
+```
+
+### Depth First Search
+
+Number of distinct items in a 2D grid
+
+```javascript
+function numIslands(grid) {
+  let count = 0;
+  let height = grid.length;
+  let length = grid[0].length;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < length; x++) {
+      if (grid[y][x] == '0') continue;
+      dfs(x, y);
+      count++;
+    }
+  }
+  return count;
+  function dfs(x, y) {
+    if (x < 0 || y < 0 || x == length || y == height) return;
+    if (grid[y][x] == '0') return;
+    grid[y][x] = '0';
+
+    dfs(x - 1, y);
+    dfs(x + 1, y);
+    dfs(x, y - 1);
+    dfs(x, y + 1);
+  }
 }
 ```
