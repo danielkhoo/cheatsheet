@@ -2,60 +2,27 @@
 
 Quick reference for data structures and algorithms for technical assessments Leetcode/HackerRank/HackerEarth/etc. Javascript cause there are a million Java ones which my brain struggles to grok.
 
-## Built-in functions
+## Big O Time Space / Complexity
 
-### Destructuring
+### Sorting
 
-```javascript
-//Filter out elements
-const { itemToRemove, ...newObject } = originalObject;
+| Algo           | Time Complexity (Worst) | Space Complexity |
+| -------------- | :---------------------: | ---------------: |
+| QuickSort      |           n^2           |           log(n) |
+| MergeSort      |         n log n         |                n |
+| Bubble Sort    |           n^2           |                1 |
+| Insertion Sort |           n^2           |                1 |
+| Selection Sort |           n^2           |                1 |
 
-//Swap values
-[a, b] = [b, a];
-```
+### Data Structures (Worst)
 
-### .sort()
-
-```javascript
-//ASC
-array.sort((a, b) => a - b);
-//DESC
-array.sort((a, b) => b - a);
-
-//ASC by property
-array.sort((a, b) => {
-  if (a.id < b.id) return -1;
-  else return 1;
-});
-```
-
-### .map()
-
-```javascript
-//Return new arr with elements doubled
-const arr = array.map(x => x * 2);
-```
-
-### .reduce()
-
-```javascript
-//Sum arr elements
-const sum = array.reduce((sum, val) => sum + val);
-```
-
-### .filter()
-
-```javascript
-// Return arr of elements over 0
-const arr = array.filter(val => val > 0);
-```
-
-### .find()
-
-```javascript
-// Return first element over 0 or undefined
-array.find(val => val > 0);
-```
+| Algo        | Access |    Search | Insertion |  Deletion | Space Complexity |
+| ----------- | :----: | --------: | --------: | --------: | ---------------: |
+| Array       |   1    |         n |         n |         n |                n |
+| HashTable   |  n/a   | n (avg 1) | n (avg 1) | n (avg 1) |                n |
+| Stack       |   n    |         n |         1 |         1 |                n |
+| Queue       |   n    |         n |         1 |         1 |                n |
+| Linked-List |   n    |         n |         1 |         1 |                n |
 
 ## Sorts
 
@@ -119,6 +86,61 @@ function insertionSort(input) {
   }
   return input;
 }
+```
+
+## Built-in functions
+
+### Destructuring
+
+```javascript
+//Filter out elements
+const { itemToRemove, ...newObject } = originalObject;
+
+//Swap values
+[a, b] = [b, a];
+```
+
+### .sort()
+
+```javascript
+//ASC
+array.sort((a, b) => a - b);
+//DESC
+array.sort((a, b) => b - a);
+
+//ASC by property
+array.sort((a, b) => {
+  if (a.id < b.id) return -1;
+  else return 1;
+});
+```
+
+### .map()
+
+```javascript
+//Return new arr with elements doubled
+const arr = array.map(x => x * 2);
+```
+
+### .reduce()
+
+```javascript
+//Sum arr elements
+const sum = array.reduce((sum, val) => sum + val);
+```
+
+### .filter()
+
+```javascript
+// Return arr of elements over 0
+const arr = array.filter(val => val > 0);
+```
+
+### .find()
+
+```javascript
+// Return first element over 0 or undefined
+array.find(val => val > 0);
 ```
 
 ## Common Questions
