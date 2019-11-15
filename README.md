@@ -211,6 +211,80 @@ function mergeArrUniqueValues(l1, l2) {
 }
 ```
 
+### Google - Watering Plants
+
+```javascript
+function waterPlants(plants, capacity1, capacity2) {
+  let i = 0;
+  let j = plants.length - 1;
+  let refillCount = 0;
+  let watercan1 = 0;
+  let watercan2 = 0;
+  while (i <= j) {
+    if (i == j) {
+      if (watercan1 + watercan2 < plants[i]) {
+        refillCount++;
+      }
+      break;
+    }
+    if (watercan1 < plants[i]) {
+      watercan1 = capacity1;
+      refillCount++;
+    }
+    watercan1 -= plants[i];
+
+    if (watercan2 < plants[j]) {
+      watercan2 = capacity2;
+      refillCount++;
+    }
+    watercan2 -= plants[j];
+
+    i++;
+    j--;
+  }
+  return refillCount;
+}
+```
+
+### Google - Rotate Dominoes
+
+```javascript
+function minDominoRotations(A, B) {
+  let valid = [];
+  let candidates = {};
+  candidates[A[0]] = 1;
+  candidates[B[0]] = 1;
+  for (let i = 1; i < A.length; i++) {
+    if (candidates[A[i]] == i) {
+      candidates[A[i]] += 1;
+    }
+    if (candidates[B[i]] == i) {
+      candidates[B[i]] += 1;
+    }
+  }
+
+  Object.keys(candidates).forEach(key => {
+    if (candidates[key] == A.length) valid.push(key);
+  });
+
+  if (valid.length == 0) {
+    return -1;
+  }
+  let swapCount1 = 0;
+  let val1 = valid[0];
+  for (let j = 0; j < A.length; j++) {
+    if (A[j] != val1) swapCount1++;
+  }
+
+  let swapCount2 = 0;
+  for (let j = 0; j < A.length; j++) {
+    if (B[j] != val1) swapCount2++;
+  }
+
+  return swapCount1 > swapCount2 ? swapCount2 : swapCount1;
+}
+```
+
 ### 3sum
 
 ```javascript
