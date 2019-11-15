@@ -169,6 +169,26 @@ function overlap(l1, l2) {
 }
 ```
 
+### 2 Array Merge Unique Values
+
+```javascript
+function mergeArrUniqueValues(l1, l2) {
+  let res = l1.concat(l2).sort();
+
+  let i = 0;
+  let j = 1;
+  while (j < res.length) {
+    if (res[i] == res[j]) {
+      res[i] = undefined;
+    }
+    i++;
+    j++;
+  }
+
+  return res.filter(val => val !== undefined);
+}
+```
+
 ### 3sum
 
 ```javascript
@@ -292,46 +312,48 @@ function maxContigous(input) {
 ### Dependency Graph
 
 ```javascript
-function canFinish(numCourses, prerequisites) {
-  let dependencyGraph = {};
-  let dependencyCount = Array(numCourses).fill(0);
+function findValidOrder(numCourses, prerequisites) {
+  let prereqGraph = {};
+  let courseDependencyCount = Array(numCourses).fill(0);
   let queue = [];
+  let order = [];
 
-  //Load the dependencyGraph with dependency:course
+  //Load the prereqGraph with dependency:course
   //e.g. '0':['1'],'1':['2']
-  //Load dependencyCount with dependencyCount per course [i]
+  //Load courseDependencyCount with courseDependencyCount per course [i]
   //e.g. [0,1,1,1,1]
   prerequisites.forEach(prereq => {
     const [course, dep] = prereq;
-    if (dependencyGraph[dep]) {
-      dependencyGraph[dep] = dependencyGraph[dep].concat(course);
+    if (prereqGraph[dep]) {
+      prereqGraph[dep] = prereqGraph[dep].concat(course);
     } else {
-      dependencyGraph[dep] = [course];
+      prereqGraph[dep] = [course];
     }
-    dependencyCount[course]++;
+    courseDependencyCount[course]++;
   });
   //Add courses with 0 dependencies to queue
-  for (let i = 0; i < dependencyCount.length; i++) {
-    if (dependencyCount[i] == 0) queue.push(i);
+  for (let i = 0; i < courseDependencyCount.length; i++) {
+    if (courseDependencyCount[i] == 0) queue.push(i);
   }
   //For each item in queue,
   while (queue.length > 0) {
     let course = queue.shift();
+    order.push(course);
     //load dependencies for a course eg '0':['1']
-    let dependencies = dependencyGraph[course];
+    let dependencies = prereqGraph[course];
     if (dependencies) {
       //Decrement dep count for ['1'], if left with 0 add to queue
       dependencies.forEach(dep => {
-        dependencyCount[dep]--;
-        if (dependencyCount[dep] == 0) queue.push(dep);
+        courseDependencyCount[dep]--;
+        if (courseDependencyCount[dep] == 0) queue.push(dep);
       });
     }
   }
-  //Check for 0s in dependencyCount, if none true
-  for (let i = 0; i < dependencyCount.length; i++) {
-    if (dependencyCount[i] !== 0) return false;
+  //Check for 0s in courseDependencyCount, if none true
+  for (let i = 0; i < courseDependencyCount.length; i++) {
+    if (courseDependencyCount[i] !== 0) return [];
   }
-  return true;
+  return order;
 }
 ```
 
