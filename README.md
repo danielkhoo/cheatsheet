@@ -289,28 +289,50 @@ function minDominoRotations(A, B) {
 
 ```javascript
 function threeSum(input) {
-  let searchHashmap = {};
-  let resHashmap = {};
-  for (let i = 0; i < input.length; i++) {
-    for (let j = 0; j < input.length; j++) {
-      if (i == j) {
-        continue;
+  nums.sort();
+  let res = [];
+  let map = new Map();
+
+  for (let i = 0; i < nums.length; i++) {
+    map.set(nums[i], i);
+  }
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+    for (let j = i + 1; j < nums.length; j++) {
+      if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+
+      const diff = 0 - (nums[i] + nums[j]);
+      if (map.has(diff) && map.get(diff) > j) {
+        res.push([nums[i], nums[j], diff]);
       }
-      //searchhashmap key is value needed for sum to be 0
-      let temp = 0 - input[i] - input[j];
-      //Check if index j matches previously saved hashes
-      if (searchHashmap[input[j]]) {
-        const [indexI, indexJ] = searchHashmap[input[j]];
-        if (j != indexI && j != indexJ) {
-          //Sort arr of 3 nums and use as key to prevent duplicates
-          const arr = [input[j], input[indexI], input[indexJ]].sort((a, b) => a - b);
-          resHashmap[arr] = arr;
-        }
-      }
-      searchHashmap[temp] = [i, j];
     }
   }
-  return Object.values(resHashmap);
+  return res;
+}
+```
+
+### Find Longest Palindrome
+
+```javascript
+function longestPalindrome(s) {
+  let res = '';
+  function findPalindrome(l, r) {
+    while (l > -1 && r < s.length) {
+      if (s[l] != s[r]) break;
+      l--;
+      r++;
+    }
+    l++;
+    r--;
+    const word = s.slice(l, r + 1);
+    if (word.length > res.length) res = word;
+  }
+  for (let i = 0; i < s.length; i++) {
+    if (i > 0 && s[i - 1] == s[i]) findPalindrome(i - 1, i);
+    findPalindrome(i, i);
+  }
+  return res;
 }
 ```
 
@@ -395,13 +417,13 @@ function linkedListContinous(head, G) {
 
 ```javascript
 function maxContigous(input) {
-  let maxEndingHere = input[0];
-  let res = input[0];
+  let maxSoFar = input[0];
+  let max = input[0];
   for (let i = 1; i < input.length; i++) {
-    maxEndingHere = Math.max(maxEndingHere + input[i], input[i]);
-    res = Math.max(res, maxEndingHere);
+    maxSoFar = Math.max(input[i], input[i] + maxSoFar);
+    max = Math.max(max, maxSoFar);
   }
-  return res;
+  return max;
 }
 ```
 
@@ -507,5 +529,79 @@ function numIslands(grid) {
     dfs(x, y - 1);
     dfs(x, y + 1);
   }
+}
+```
+
+### Breadth First Search
+
+```javascript
+function cloneGraph(node) {
+  let map = new Map();
+  function recursiveTraverse(node) {
+    if (map.has(node.val)) {
+      return map.get(node.val);
+    }
+    let clonedNeighbors = [];
+    let clonedNode = new Node(node.val, clonedNeighbors);
+    map.set(node.val, clonedNode);
+    for (let i = 0; i < node.neighbors.length; i++) {
+      clonedNeighbors.push(recursiveTraverse(node.neighbors[i]));
+    }
+    return clonedNode;
+  }
+  return recursiveTraverse(node);
+}
+```
+
+### Sliding Window
+
+```javascript
+var maxSumTwoNoOverlap = function(A, L, M) {
+  function maxSum(L, M) {
+    let maxSum = 0;
+    let i = 0;
+    let j = A.length - L;
+    //Sliding window, break out of inner when they hit
+    for (let i = 0; i < A.length; i++) {
+      let flag = false;
+      for (let j = A.length - L; j >= 0; j--) {
+        if (i + M > A.length || i + M > j) {
+          flag = true;
+          break;
+        }
+        sum = A.slice(i, i + M)
+          .concat(A.slice(j, j + L))
+          .reduce((sum, val) => sum + val);
+        if (sum > maxSum) maxSum = sum;
+      }
+      if (flag) continue;
+    }
+    return maxSum;
+  }
+  //Swap the order of the sliding windows, to check both sides
+  return Math.max(maxSum(L, M), maxSum(M, L));
+};
+```
+
+### Array Manipulation
+
+```javascript
+function findMostFreqInt(input) {
+  let hashmap = {};
+  let max = 0;
+  let mostFreq;
+  for (let i = 0; i < input.length; i++) {
+    const num = input[i];
+    if (hashmap[num]) {
+      hashmap[num]++;
+    } else {
+      hashmap[num] = 1;
+    }
+    if (hashmap[num] > max) {
+      max = hashmap[num];
+      mostFreq = num;
+    }
+  }
+  return mostFreq;
 }
 ```
